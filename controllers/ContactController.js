@@ -1,14 +1,30 @@
-const inquirer = require("inquirer");
-
+const inquirer = require('inquirer');
+const Contact = require('../db/models').Contact;
 
 module.exports = class ContactController {
+	constructor() {
+		this.contacts = [];
+		this.addContactQuestions = [
+			{
+				type: 'input',
+				name: 'name',
+				message: "Contact's name - ",
+				validate(val) {
+					return val !== '';
+				}
+			},
+			{
+				type: 'input',
+				name: 'phone',
+				message: "Contact's phone number - ",
+				validate(val) {
+					return val !== '';
+				}
+			}
+		];
+	}
 
-  constructor(){
-    this.contacts = [];
-  }
-
-  addContact(name, phone){
-    this.contacts.push({name, phone});
-  }
-
-}
+	addContact(name, phone) {
+		return Contact.create({ name, phone });
+	}
+};
